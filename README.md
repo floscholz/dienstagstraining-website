@@ -6,7 +6,21 @@ Moderne responsive Website für eine private Basketballgruppe in Frankfurt am Ma
 
 Die Website verbindet einen statischen Astro-Auftritt mit aktuellen Trainingsdaten aus einer öffentlichen Nuudel-Umfrage. Das Design ist bewusst reduziert, typografisch und auf Desktop, Tablet und Mobile ausgelegt.
 
-<!-- TODO: Saubere Desktop- und Mobile-Screenshots ergänzen. -->
+<!-- screenshots:start -->
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/desktop-hero.jpg" alt="Dienstagstraining – Desktop Hero" width="100%">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/mobile-training.jpg" alt="Dienstagstraining – Live-Trainingsbereich auf Mobile" width="360">
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/mobile-about.jpg" alt="Dienstagstraining – Über-uns-Bereich auf Mobile" width="360">
+</p>
+
+<!-- screenshots:end -->
 
 ## Features
 
