@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { legal } from '../config/legal';
+---
+<BaseLayout title="Impressum | Dienstagstraining" description="Impressum von Dienstagstraining.">
+  <main class="section legal-page">
+    <div class="section__inner legal-page__inner">
+      <p class="eyebrow">Rechtliches</p>
+      <h1>Impressum</h1>
+      <section aria-labelledby="anbieterkennzeichnung">
+        <h2 id="anbieterkennzeichnung">Angaben gemäß § 18 Abs. 1 Medienstaatsvertrag (MStV)</h2>
+        <address>{legal.name}<br />{legal.street}<br />{legal.city}<br />{legal.country}</address>
+      </section>
+      <section aria-labelledby="kontakt">
+        <h2 id="kontakt">Kontakt</h2>
+        <p>E-Mail: <a href={`mailto:${legal.email}`}>{legal.email}</a></p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

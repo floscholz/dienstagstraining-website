@@ -1,0 +1,412 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+const nuudelPollUrl = 'https://nuudel.digitalcourage.de/zEF2odgzCry7VOLm';
+
+const linkGroups = [
+  {
+    id: 'basketball',
+    title: 'Basketball',
+    links: [
+      { label: 'Deutscher Basketball Bund', url: 'https://www.basketball-bund.de/', description: 'Der Verband. Regeln, Teams und alles Offizielle.' },
+      { label: 'Basketball-Bundesliga', url: 'https://www.easycredit-bbl.de/', description: 'Die erste Liga – für alle, die dienstags nicht selbst auf dem Feld stehen.' },
+      { label: 'Schönen Dunk', url: 'https://www.schoenen-dunk.de/', description: 'Deutsche Basketball-Fancommunity und Forum.' },
+      { label: 'VET-CONCEPT Gladiators Trier', url: 'https://vetconceptgladiators.de/', description: 'Trierer Profibasketball.' },
+    ],
+  },
+  {
+    id: 'frankfurt-region',
+    title: 'Frankfurt & Region',
+    links: [
+      { label: 'Frankfurt Skyliners', url: 'https://www.frankfurt-skyliners.de/', description: 'Basketball aus Frankfurt, mit deutlich mehr Hallenlicht.' },
+      { label: 'Hessischer Basketball-Verband', url: 'https://www.hessenbasketball.de/', description: 'Der Verband für Hessen und die Region.' },
+      { label: 'Eintracht Frankfurt Basketball', url: 'https://basketball.eintracht.de/', description: 'Basketballabteilung von Eintracht Frankfurt.' },
+    ],
+  },
+  {
+    id: 'international',
+    title: 'International',
+    links: [
+      { label: 'NBA', url: 'https://www.nba.com/', description: 'Die große Bühne – und gelegentlich eine gute Ausrede für zu wenig Schlaf.' },
+    ],
+  },
+  { id: 'sonstiges', title: 'Sonstiges', links: [] },
+];
+---
+
+<BaseLayout title="Dienstagstraining | Basketball" description="Eine Basketball-Website für Dienstagstraining.">
+  <script is:inline>
+    const resetHomeScrollPosition = () => {
+      if (window.location.hash) return;
+
+      const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      document.documentElement.style.scrollBehavior = previousScrollBehavior;
+    };
+
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    resetHomeScrollPosition();
+    window.addEventListener('pageshow', resetHomeScrollPosition);
+  </script>
+  <main>
+    <section class="hero-scroll" id="top" data-hero-trigger aria-labelledby="hero-title">
+      <div class="hero-stage">
+        <div class="hero-background" aria-hidden="true"><img src="/images/hero/basketball-v17-poster.jpg" alt="" /></div>
+        <video class="hero-video" aria-hidden="true" muted playsinline preload="metadata" poster="/images/hero/basketball-v17-poster.jpg">
+          <source src="/videos/hero/basketball-v17.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-content">
+          <p class="eyebrow">Basketball</p>
+          <h1 id="hero-title"><span>Dienstags</span><span>training.</span></h1>
+          <p class="hero__lead">Basketball. Bewegung. Gemeinschaft.</p>
+          <p class="hero__date-line">Jeden Dienstag.</p>
+          <div class="hero-actions">
+            <a class="button" href="#training">Nächstes Training</a>
+            <a class="button button--quiet" href="#ueber-uns">Mehr erfahren</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-showcase" id="training" aria-labelledby="training-title" data-reveal>
+      <div class="training-showcase__inner">
+        <div class="training-showcase__main">
+          <p class="eyebrow">Nächstes Training</p>
+          <h2 id="training-title" data-training-date>Nächstes Training</h2>
+          <p class="training-showcase__schedule" data-training-schedule>Details werden aktualisiert.</p>
+        </div>
+        <div class="training-showcase__details">
+          <p class="training-showcase__status-label" data-training-status aria-live="polite">Aktualisiere Teilnehmerzahl …</p>
+          <p class="training-showcase__updated-at" data-training-updated-at hidden></p>
+          <ul class="training-showcase__attendance" aria-label="Teilnahmestatus">
+            <li class="training-showcase__status training-showcase__status--confirmed"><strong data-training-yes>–</strong><span>dabei</span></li>
+            <li class="training-showcase__status"><strong data-training-maybe>–</strong><span>vielleicht</span></li>
+          </ul>
+          <a class="button training-showcase__cta" href={nuudelPollUrl} target="_blank" rel="noopener noreferrer">Zur Abstimmung <span aria-hidden="true">→</span></a>
+          <div data-training-comment></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Bereiche im Überblick">
+      <div class="section__inner preview-grid">
+        <section class="preview about-preview" id="ueber-uns" data-reveal aria-labelledby="about-title">
+          <div class="about-preview__intro">
+            <p class="eyebrow">Über uns</p>
+            <h2 class="about-title" id="about-title"><span>Basketball</span><span>auf</span><span class="about-title__accented">„höchstem“</span><span>Niveau.</span></h2>
+            <p class="about-preview__tagline">Basketball von A bis Bier.</p>
+            <p class="about-preview__lead">Dienstagstraining? Basketball? Hohes Niveau? Bier? Das passt erstaunlich gut zusammen – und wird von uns jede Woche aufs Neue bewiesen.</p>
+            <p>Wir treffen uns jeden Dienstag um 20:00 Uhr zum Basketball. Wer mitspielen möchte, sollte schon etwas Erfahrung mitbringen – mehr jedenfalls, als einen Ball zu fangen und zu wissen, wo er rein muss.</p>
+          </div>
+          <section class="about-kastenmann" aria-labelledby="kastenmann-title">
+            <p class="eyebrow">Wöchentliche Verantwortung</p>
+            <h3 id="kastenmann-title">Der Kastenmann</h3>
+            <p class="about-kastenmann__intro">Der Kastenmann ist selbstverständlich einer der wichtigsten Spieler der Woche und darf deshalb nicht unerwähnt bleiben.</p>
+            <ul class="about-kastenmann__checklist" aria-label="Kastenmann-Regeln">
+              <li>Kasten</li>
+              <li>24 volle Bierflaschen</li>
+              <li>kalt</li>
+              <li>0,33 l</li>
+              <li>kein Doppelbock</li>
+              <li>noch haltbar</li>
+            </ul>
+            <p>Jeden Dienstag bringt ein Mitspieler eine Kiste Bier mit. Neue Spieler geben ohnehin ihren Einstand. Dabei gelten ein paar Regeln: Die Kiste ist voll – und voll bedeutet 24 Flaschen à 0,33 Liter. Sie ist auch nach dem Training noch ordentlich gekühlt. Kein Doppelbock und kein experimentelles Saisonbier. Und selbstverständlich ist das Bier noch nicht abgelaufen.</p>
+          </section>
+        </section>
+        <section class="preview contact-preview" id="mitspielen" data-reveal aria-labelledby="contact-title">
+          <span class="contact-preview__anchor" id="kontakt" aria-hidden="true"></span>
+          <div class="contact-preview__content">
+            <p class="eyebrow">Mitspielen</p>
+            <h2 id="contact-title"><span>Noch Fragen?</span><span>Oder direkt mitspielen?</span></h2>
+            <p class="contact-preview__lead">Du willst etwas mehr über das Dienstagstraining wissen oder einfach mal mitspielen? Dann schreib uns eine Mail. Alles Weitere klären wir unkompliziert – und neue Spieler wissen ja inzwischen, was es mit dem Einstand auf sich hat.</p>
+            <!-- TODO: Kontakt-Mailadresse einsetzen -->
+            <span class="button contact-preview__cta" aria-disabled="true">E-Mail schreiben <span aria-hidden="true">→</span></span>
+            <p class="contact-preview__signature">Dienstags. 20:00 Uhr. Basketball. Bier.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="travel-section" id="anfahrt" data-reveal aria-labelledby="travel-title">
+      <div class="travel-section__inner">
+        <div class="travel-section__content">
+          <p class="eyebrow">Anfahrt</p>
+          <h2 id="travel-title">Hier wird gespielt.</h2>
+          <address>Trainingsort<br />Trainingsort 8<br />Trainingsort</address>
+          <a class="button button--quiet" href="https://www.google.com/maps/search/?api=1&amp;query=Trainingsort%2C%20Trainingsort%208%2C%20Trainingsort" target="_blank" rel="noopener noreferrer">Route in Google Maps öffnen <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="map-consent" data-map-consent>
+          <div class="map-consent__copy">
+            <p class="eyebrow">Karte</p>
+            <p>Mit dem Laden der Karte werden Inhalte von Google Maps geladen.</p>
+            <button class="button" type="button" data-map-load>Interaktive Karte laden</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="links-page" id="links" data-reveal aria-labelledby="links-title">
+      <div class="links-intro">
+        <div class="links-intro__inner">
+          <p class="eyebrow">Links</p>
+          <h2 id="links-title">Basketball im Netz.</h2>
+          <p class="links-intro__secondary">Von Frankfurt bis NBA.</p>
+          <p class="links-intro__copy">Ein paar Links rund um Basketball, Frankfurt und alles, was sonst noch zum Dienstagstraining passt. Die Liste darf wachsen.</p>
+        </div>
+      </div>
+
+      <div class="links-directory" aria-label="Linksammlung">
+        <div class="links-directory__inner">
+          {linkGroups.filter((group) => group.links.length > 0).map((group) => (
+            <section class="link-group" aria-labelledby={`link-group-${group.id}`}>
+              <h3 id={`link-group-${group.id}`}>{group.title}</h3>
+              <ul class="link-group__list">
+                {group.links.map((link) => (
+                  <li>
+                    <a class="link-row" href={link.url} target="_blank" rel="noopener noreferrer">
+                      <span class="link-row__content">
+                        <span class="link-row__label">{link.label}</span>
+                        <span class="link-row__description">{link.description}</span>
+                      </span>
+                      <span class="link-row__arrow" aria-hidden="true">↗</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<script>
+  const revealTargets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const HERO_ENTER_THRESHOLD = 0.6;
+  const HERO_LEAVE_THRESHOLD = 0.15;
+  const VIDEO_START_DELAY = 620;
+  const TITLE_REVEAL_TIME = 0.8;
+  const CONTENT_REVEAL_DELAY = 200;
+
+  const sectionNavLinks = document.querySelectorAll<HTMLAnchorElement>('[data-scrollspy-link]');
+  const scrollspySections = Array.from(sectionNavLinks).flatMap((link) => {
+    const section = document.getElementById(link.dataset.scrollspyLink ?? '');
+    return section ? [{ link, section }] : [];
+  });
+
+  if (scrollspySections.length) {
+    const setActiveSection = (activeId: string) => {
+      sectionNavLinks.forEach((link) => {
+        if (link.dataset.scrollspyLink === activeId) {
+          link.setAttribute('aria-current', 'location');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    const scrollspyObserver = new IntersectionObserver((entries) => {
+      const activeEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((first, second) => second.intersectionRatio - first.intersectionRatio)[0];
+
+      if (activeEntry) {
+        setActiveSection(activeEntry.target.id);
+      }
+    }, { rootMargin: '-35% 0px -50% 0px', threshold: 0 });
+
+    scrollspySections.forEach(({ section }) => scrollspyObserver.observe(section));
+  }
+
+  const trainingDate = document.querySelector<HTMLElement>('[data-training-date]');
+  const trainingSchedule = document.querySelector<HTMLElement>('[data-training-schedule]');
+  const trainingStatus = document.querySelector<HTMLElement>('[data-training-status]');
+  const trainingUpdatedAt = document.querySelector<HTMLElement>('[data-training-updated-at]');
+  const trainingYes = document.querySelector<HTMLElement>('[data-training-yes]');
+  const trainingMaybe = document.querySelector<HTMLElement>('[data-training-maybe]');
+  const trainingComment = document.querySelector<HTMLElement>('[data-training-comment]');
+
+  const renderTrainingComment = (comment: { author: string; text: string } | null) => {
+    if (!trainingComment) return;
+    trainingComment.replaceChildren();
+    if (!comment) return;
+
+    const aside = document.createElement('aside');
+    aside.className = 'training-showcase__comment';
+    aside.setAttribute('aria-label', 'Aktueller Kommentar');
+    const author = document.createElement('p');
+    author.className = 'training-showcase__comment-author';
+    author.textContent = comment.author;
+    const text = document.createElement('p');
+    text.className = 'training-showcase__comment-text';
+    text.textContent = `„${comment.text}“`;
+    aside.append(author, text);
+    trainingComment.append(aside);
+  };
+
+  let hasLiveTrainingData = false;
+  let isRefreshingTraining = false;
+  let lastTrainingRequestAt = 0;
+
+  const refreshTraining = () => {
+    const now = Date.now();
+    if (isRefreshingTraining || now - lastTrainingRequestAt < 60_000) return;
+    isRefreshingTraining = true;
+    lastTrainingRequestAt = now;
+
+    fetch('/api/nuudel', { cache: 'no-store', headers: { Accept: 'application/json' } })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Nuudel nicht erreichbar')))
+      .then((training) => {
+        if (!trainingDate || !trainingSchedule || !trainingStatus || !trainingUpdatedAt || !trainingYes || !trainingMaybe) return;
+        trainingDate.textContent = training.dateLabel;
+        trainingSchedule.replaceChildren();
+        const time = document.createElement('time');
+        time.dateTime = `${training.date}T${training.time}`;
+        time.textContent = `${training.time} Uhr`;
+        trainingSchedule.append(time);
+        if (training.locationText) trainingSchedule.append(' · ', training.locationText);
+        trainingYes.textContent = String(training.yes);
+        trainingMaybe.textContent = String(training.maybe);
+        trainingStatus.textContent = 'Teilnahme';
+        const updatedAt = new Date(training.updatedAt);
+        if (Number.isNaN(updatedAt.getTime())) {
+          trainingUpdatedAt.textContent = '';
+          trainingUpdatedAt.hidden = true;
+        } else {
+          const updatedTime = new Intl.DateTimeFormat('de-DE', {
+            timeZone: 'Europe/Berlin',
+            hour: '2-digit',
+            minute: '2-digit',
+            hourCycle: 'h23',
+          }).format(updatedAt);
+          trainingUpdatedAt.textContent = `Stand: ${updatedTime} Uhr`;
+          trainingUpdatedAt.hidden = false;
+        }
+        renderTrainingComment(training.comment);
+        hasLiveTrainingData = true;
+      })
+      .catch(() => {
+        if (hasLiveTrainingData) return;
+        if (trainingStatus) trainingStatus.textContent = 'Teilnehmerzahl momentan nicht abrufbar';
+        if (trainingSchedule) trainingSchedule.textContent = 'Details momentan nicht abrufbar.';
+        if (trainingUpdatedAt) {
+          trainingUpdatedAt.textContent = '';
+          trainingUpdatedAt.hidden = true;
+        }
+        renderTrainingComment(null);
+      })
+      .finally(() => { isRefreshingTraining = false; });
+  };
+
+  refreshTraining();
+  window.setInterval(() => {
+    if (!document.hidden) refreshTraining();
+  }, 60_000);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refreshTraining();
+  });
+
+  const mapConsent = document.querySelector<HTMLElement>('[data-map-consent]');
+  const mapLoadButton = document.querySelector<HTMLButtonElement>('[data-map-load]');
+  mapLoadButton?.addEventListener('click', () => {
+    if (!mapConsent) return;
+    const iframe = document.createElement('iframe');
+    iframe.className = 'map-consent__iframe';
+    iframe.title = 'Karte zur Trainingsort';
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+    iframe.src = 'https://www.google.com/maps?q=Trainingsort%2C%20Trainingsort%208%2C%20Trainingsort&output=embed';
+    mapConsent.replaceChildren(iframe);
+    mapConsent.classList.add('is-loaded');
+  });
+
+  if (!reducedMotion.matches) {
+    document.documentElement.dataset.motionReady = 'true';
+
+    const hero = document.querySelector<HTMLElement>('[data-hero-trigger]');
+    const video = hero?.querySelector<HTMLVideoElement>('.hero-video');
+    const title = hero?.querySelector<HTMLElement>('#hero-title');
+    const content = hero?.querySelector<HTMLElement>('.hero-content');
+
+    if (hero && video && title && content) {
+      let isArmed = true;
+      let startTimer: number | undefined;
+      let contentTimer: number | undefined;
+      let videoFrame: number | undefined;
+      let isSequenceActive = false;
+
+      const resetSequence = () => {
+        isSequenceActive = false;
+        window.clearTimeout(startTimer);
+        window.clearTimeout(contentTimer);
+        window.cancelAnimationFrame(videoFrame);
+        video.pause();
+        video.currentTime = 0;
+        title.classList.remove('is-visible');
+        content.classList.remove('is-content-visible');
+      };
+
+      const watchVideoTime = () => {
+        if (!isSequenceActive) return;
+
+        if (video.currentTime >= TITLE_REVEAL_TIME && !title.classList.contains('is-visible')) {
+          title.classList.add('is-visible');
+          contentTimer = window.setTimeout(() => content.classList.add('is-content-visible'), CONTENT_REVEAL_DELAY);
+        }
+
+        if (!video.ended) {
+          videoFrame = window.requestAnimationFrame(watchVideoTime);
+        }
+      };
+
+      const startSequence = () => {
+        if (!isSequenceActive) return;
+
+        video.currentTime = 0;
+        video.play().then(() => {
+          videoFrame = window.requestAnimationFrame(watchVideoTime);
+        }).catch(() => {
+          title.classList.add('is-visible');
+          content.classList.add('is-content-visible');
+        });
+      };
+
+      const heroObserver = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+
+        if (entry.intersectionRatio <= HERO_LEAVE_THRESHOLD) {
+          resetSequence();
+          isArmed = true;
+          return;
+        }
+
+        if (isArmed && entry.intersectionRatio >= HERO_ENTER_THRESHOLD) {
+          isArmed = false;
+          isSequenceActive = true;
+          startTimer = window.setTimeout(startSequence, VIDEO_START_DELAY);
+        }
+      }, { threshold: [0, HERO_LEAVE_THRESHOLD, HERO_ENTER_THRESHOLD, 1] });
+
+      heroObserver.observe(hero);
+    }
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -18% 0px', threshold: .12 });
+
+    revealTargets.forEach((target) => revealObserver.observe(target));
+  }
+</script>

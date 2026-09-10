@@ -1,0 +1,6 @@
+---
+const isHome = Astro.url.pathname === '/';
+const homeLink = (anchor: string) => isHome ? anchor : `/${anchor}`;
+---
+
+<header class="site-header"><div class="site-header__inner"><a class="wordmark" href={isHome ? '#top' : '/'} aria-label="Dienstagstraining – Startseite">DIENSTAGSTRAINING</a><nav class="site-nav" aria-label="Hauptnavigation"><a href={homeLink('#top')} data-scrollspy-link="top">Home</a><a href={homeLink('#training')} data-scrollspy-link="training">Training</a><a href={homeLink('#ueber-uns')} data-scrollspy-link="ueber-uns">Über uns</a><a href={homeLink('#mitspielen')} data-scrollspy-link="mitspielen">Mitspielen</a><a href={homeLink('#anfahrt')} data-scrollspy-link="anfahrt">Anfahrt</a><a href={homeLink('#links')} data-scrollspy-link="links">Links</a></nav></div></header>

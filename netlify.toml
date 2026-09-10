@@ -1,0 +1,8 @@
+[build]
+  publish = "dist"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/nuudel"
+  to = "/.netlify/functions/nuudel"
+  status = 200

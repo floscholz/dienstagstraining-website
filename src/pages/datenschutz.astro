@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { legal } from '../config/legal';
+---
+<BaseLayout title="Datenschutzerklärung | Dienstagstraining" description="Datenschutzerklärung von Dienstagstraining.">
+  <main class="section legal-page">
+    <div class="section__inner legal-page__inner">
+      <p class="eyebrow">Rechtliches</p>
+      <h1>Datenschutzerklärung</h1>
+
+      <section aria-labelledby="verantwortlicher">
+        <h2 id="verantwortlicher">Verantwortlicher</h2>
+        <address>{legal.name}<br />{legal.street}<br />{legal.city}<br />{legal.country}</address>
+        <p>E-Mail: <a href={`mailto:${legal.email}`}>{legal.email}</a></p>
+      </section>
+
+      <section aria-labelledby="hosting">
+        <h2 id="hosting">Hosting über Netlify</h2>
+        <p>Diese Website wird bei Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, USA, gehostet. Beim Aufruf der Website verarbeitet Netlify technisch notwendige Verbindungsdaten, damit die Seite an den Browser ausgeliefert werden kann.</p>
+        <p>Dazu können insbesondere IP-Adresse, Datum und Uhrzeit des Abrufs, angeforderte Seite oder Datei, HTTP-Status, übertragene Datenmenge, Referrer (sofern übermittelt), Browser beziehungsweise User-Agent, Betriebssystem und weitere technische Clientinformationen gehören.</p>
+        <p>Die Verarbeitung dient der Auslieferung der Website, ihrer Stabilität und technischen Sicherheit sowie der Missbrauchs- und Angriffserkennung. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt im sicheren, stabilen und technisch funktionsfähigen Betrieb dieser Website.</p>
+        <p>Wir führen selbst keine zusätzlichen Server-Logdateien zu Analysezwecken. Technisch beim Hosting anfallende Daten werden von Netlify nur entsprechend den technischen und vertraglichen Erfordernissen beziehungsweise gesetzlichen Aufbewahrungspflichten verarbeitet und gelöscht. Weitere Informationen finden Sie in der <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von Netlify</a>.</p>
+      </section>
+
+      <section aria-labelledby="drittlandtransfer">
+        <h2 id="drittlandtransfer">Verarbeitung in Drittländern</h2>
+        <p>Netlify ist ein Anbieter mit Sitz in den USA. Bei der Nutzung können personenbezogene Daten in den USA oder anderen Ländern verarbeitet werden. Netlify erklärt, für Übermittlungen in die USA das EU-U.S. Data Privacy Framework zu nutzen und, soweit erforderlich, weitere geeignete Garantien wie EU-Standardvertragsklauseln einzusetzen. Details hierzu finden Sie in der <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von Netlify</a>.</p>
+      </section>
+
+      <section aria-labelledby="cookies-tracking">
+        <h2 id="cookies-tracking">Cookies und Tracking</h2>
+        <p>Wir setzen derzeit keine Analyse-, Marketing- oder Tracking-Cookies ein und verwenden keine Analyse- oder Marketingdienste. Daher ist für den aktuellen Stand dieser Website kein Consent- oder Cookie-Banner vorgesehen.</p>
+      </section>
+
+      <section aria-labelledby="google-maps">
+        <h2 id="google-maps">Google Maps</h2>
+        <p>Die Karte wird nicht automatisch geladen. Erst nach Ihrer aktiven Betätigung von „Interaktive Karte laden“ werden Inhalte von Google Maps geladen. Dabei können insbesondere Ihre IP-Adresse sowie technische Browser- und Gerätedaten an Google übermittelt werden. Eine Verarbeitung kann auch in Drittländern stattfinden.</p>
+        <p>Anbieter ist Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Weitere Informationen finden Sie in der <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von Google</a>.</p>
+      </section>
+
+      <section aria-labelledby="externe-links">
+        <h2 id="externe-links">Externe Links</h2>
+        <p>Diese Website enthält Links zu externen Websites, etwa zu Basketballangeboten oder zur Nuudel-Abstimmung. Erst wenn Sie einen solchen Link aufrufen, verlassen Sie diese Website. Die jeweilige externe Stelle kann dann personenbezogene Daten nach ihren eigenen Datenschutzbestimmungen verarbeiten.</p>
+      </section>
+
+      <section aria-labelledby="email">
+        <h2 id="email">Kontakt per E-Mail</h2>
+        <p>Wenn Sie uns per E-Mail kontaktieren, verarbeiten wir die von Ihnen übermittelten Daten, insbesondere Ihre E-Mail-Adresse, gegebenenfalls Ihren Namen, den Inhalt Ihrer Nachricht und weitere freiwillig übermittelte Angaben. Dies dient der Bearbeitung und Beantwortung Ihrer Nachricht.</p>
+        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in der Kommunikation mit Interessierten und Nutzern der Website. E-Mail-Kommunikation erfolgt über Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Informationen zum Datenschutz finden Sie in der <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Datenschutzerklärung von Google</a>.</p>
+        <p>Nachrichten speichern wir nur so lange, wie dies für die Bearbeitung und Kommunikation erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen.</p>
+      </section>
+
+      <section aria-labelledby="rechte">
+        <h2 id="rechte">Ihre Rechte</h2>
+        <p>Unter den gesetzlichen Voraussetzungen haben Sie insbesondere das Recht auf:</p>
+        <ul>
+          <li>Auskunft (Art. 15 DSGVO),</li><li>Berichtigung (Art. 16 DSGVO),</li><li>Löschung (Art. 17 DSGVO),</li><li>Einschränkung der Verarbeitung (Art. 18 DSGVO),</li><li>Datenübertragbarkeit, soweit anwendbar (Art. 20 DSGVO),</li><li>Widerspruch (Art. 21 DSGVO).</li>
+        </ul>
+        <p>Sie haben außerdem das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren. Zuständig für Hessen ist:</p>
+        <address>Der Hessische Beauftragte für Datenschutz und Informationsfreiheit<br />Gustav-Stresemann-Ring 1<br />65189 Wiesbaden</address>
+        <p><a href="https://datenschutz.hessen.de/" target="_blank" rel="noopener noreferrer">datenschutz.hessen.de</a></p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
