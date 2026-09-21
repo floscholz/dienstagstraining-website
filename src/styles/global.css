@@ -199,10 +199,10 @@ html[data-motion-ready='true'] [data-reveal].is-visible { opacity: 1; transform:
   .hero-video { object-position: 68% center; }
   .hero__lead, .hero__date-line, .hero-actions { position: relative; z-index: 2; }
   .about-kastenmann__checklist { grid-template-columns: 1fr; }
-  .training-showcase::after { background-position: center, 74% center; opacity: .07; }
-  .about-preview::before { background-position: center, 72% center; opacity: .09; }
-  .contact-preview::after { background-position: center, 77% center; opacity: .05; }
-  .travel-section::before { background-position: center, 70% center; opacity: .04; }
+  .training-showcase::after { background-position: center, 68% 22%; background-size: cover, auto 145%; opacity: .13; }
+  .about-preview::before { background-position: center, 70% 20%; background-size: cover, auto 145%; opacity: .16; }
+  .contact-preview::after { background-position: center, 68% 24%; background-size: cover, auto 145%; opacity: .09; }
+  .travel-section::before { background-position: center, 70% 22%; background-size: cover, auto 145%; opacity: .07; }
 }
 
 
