@@ -7,6 +7,7 @@
   --color-orange: #ff6a1a;
   --color-orange-hot: #ff4d00;
   --color-border: rgba(255, 255, 255, .10);
+  --v17-poster: url('/images/hero/basketball-v17-poster.jpg');
   --font-display: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --weight-medium: 500;
@@ -61,6 +62,9 @@ html[data-motion-ready='true'] .hero-content h1.is-visible { opacity: 1; filter:
 html[data-motion-ready='true'] .hero-content.is-content-visible > :not(h1) { opacity: 1; transform: translateY(0); }
 
 .training-showcase { position: relative; min-height: 100svh; padding: clamp(6rem, 13vw, 11rem) var(--space-4); border-top: 1px solid var(--color-border); background: radial-gradient(ellipse 70% 55% at 90% 0%, rgba(255, 96, 19, .13), transparent 65%), var(--color-surface); }
+.training-showcase::after, .about-preview::before, .contact-preview::after, .travel-section::before { position: absolute; z-index: 0; inset: 0; background-image: linear-gradient(90deg, rgba(5, 5, 6, .88), transparent 48%, rgba(5, 5, 6, .72)), var(--v17-poster); background-position: center, 79% center; background-repeat: no-repeat; background-size: cover, auto 155%; content: ''; opacity: .10; pointer-events: none; -webkit-mask-image: radial-gradient(ellipse 74% 68% at 78% 50%, #000 20%, transparent 78%); mask-image: radial-gradient(ellipse 74% 68% at 78% 50%, #000 20%, transparent 78%); }
+.training-showcase::after { opacity: .09; }
+.training-showcase__inner, .section__inner, .travel-section__inner { position: relative; z-index: 1; }
 .training-showcase__inner, .section__inner { width: min(100%, var(--content-max-width)); margin-inline: auto; }
 .training-showcase__inner { display: grid; gap: clamp(3.5rem, 8vw, 8rem); }
 .training-showcase__main { align-self: center; }
@@ -81,6 +85,7 @@ html[data-motion-ready='true'] .hero-content.is-content-visible > :not(h1) { opa
 .training-showcase__comment-author { margin-bottom: 0; color: var(--color-text); font-size: .82rem; font-weight: var(--weight-bold); }
 .training-showcase__comment-text { margin-bottom: 0; color: var(--color-text-muted); font-size: .94rem; }
 .travel-section { padding: clamp(5.5rem, 11vw, 9rem) var(--space-4); border-top: 1px solid var(--color-border); background: radial-gradient(ellipse 70% 65% at 10% 35%, rgba(255, 106, 26, .10), transparent 70%), var(--color-bg); }
+.travel-section::before { background-position: center, 72% center; opacity: .06; -webkit-mask-image: radial-gradient(ellipse 58% 62% at 83% 48%, #000 8%, transparent 76%); mask-image: radial-gradient(ellipse 58% 62% at 83% 48%, #000 8%, transparent 76%); }
 .travel-section__inner { display: grid; width: min(100%, var(--content-max-width)); gap: clamp(3rem, 7vw, 6rem); margin-inline: auto; }
 .travel-section__content { display: grid; align-content: center; justify-items: start; }
 .travel-section h2 { max-width: 9ch; margin-bottom: var(--space-4); font-size: clamp(3.6rem, 7.5vw, 8rem); }
@@ -109,6 +114,9 @@ html[data-motion-ready='true'] .hero-content.is-content-visible > :not(h1) { opa
 .preview p { color: var(--color-text-muted); }
 .preview h2 { font-size: clamp(2.25rem, 7vw, 4.8rem); }
 .about-preview { display: grid; grid-column: 1 / -1; max-width: none; gap: clamp(3rem, 8vw, 8rem); padding-bottom: clamp(4.5rem, 10vw, 9rem); border-bottom: 1px solid var(--color-border); }
+.about-preview { position: relative; isolation: isolate; }
+.about-preview::before { background-position: center, 76% center; opacity: .13; }
+.about-preview > * { position: relative; z-index: 1; }
 .about-preview__intro { max-width: 48rem; }
 .about-preview h2 { max-width: 10ch; margin-bottom: var(--space-4); font-size: clamp(4rem, 8vw, 8.5rem); line-height: .88; }
 .about-title { display: flex; flex-direction: column; }
@@ -125,9 +133,10 @@ html[data-motion-ready='true'] .hero-content.is-content-visible > :not(h1) { opa
 .about-kastenmann__checklist li { display: flex; align-items: center; gap: .65rem; min-height: 3rem; border-bottom: 1px solid var(--color-border); color: var(--color-text); font-size: .93rem; font-weight: var(--weight-medium); }
 .about-kastenmann__checklist li::before { color: var(--color-orange); content: '✓'; font-size: .8rem; font-weight: var(--weight-bold); }
 .contact-preview { position: relative; display: grid; grid-column: 1 / -1; min-height: 76svh; max-width: none; align-items: center; padding: clamp(4.5rem, 10vw, 9rem) 0 clamp(5.5rem, 12vw, 11rem); overflow: clip; }
-.contact-preview::before { position: absolute; inset: 0; background: radial-gradient(ellipse 58% 48% at 78% 52%, rgba(255, 106, 26, .12), transparent 70%); content: ''; pointer-events: none; }
+.contact-preview::before { position: absolute; z-index: 0; inset: 0; background: radial-gradient(ellipse 58% 48% at 78% 52%, rgba(255, 106, 26, .12), transparent 70%); content: ''; pointer-events: none; }
+.contact-preview::after { background-position: center, 82% center; opacity: .07; }
 .contact-preview__anchor { position: absolute; top: 0; }
-.contact-preview__content { position: relative; max-width: 57rem; }
+.contact-preview__content { position: relative; z-index: 1; max-width: 57rem; }
 .contact-preview h2 { max-width: 12ch; margin-bottom: var(--space-5); font-size: clamp(4rem, 8.8vw, 9.5rem); line-height: .9; text-wrap: balance; }
 .contact-preview h2 span { display: block; }
 .contact-preview__lead { max-width: 39rem; margin-bottom: var(--space-5); color: var(--color-text) !important; font-size: clamp(1.1rem, 1.7vw, 1.32rem); font-weight: var(--weight-medium); }
@@ -190,6 +199,10 @@ html[data-motion-ready='true'] [data-reveal].is-visible { opacity: 1; transform:
   .hero-video { object-position: 68% center; }
   .hero__lead, .hero__date-line, .hero-actions { position: relative; z-index: 2; }
   .about-kastenmann__checklist { grid-template-columns: 1fr; }
+  .training-showcase::after { background-position: center, 74% center; opacity: .07; }
+  .about-preview::before { background-position: center, 72% center; opacity: .09; }
+  .contact-preview::after { background-position: center, 77% center; opacity: .05; }
+  .travel-section::before { background-position: center, 70% center; opacity: .04; }
 }
 
 
