@@ -32,7 +32,6 @@ Die Website verbindet einen statischen Astro-Auftritt mit aktuellen Trainingsdat
 - Ermittlung des nächsten Trainingstermins mit Europe/Berlin-Zeitlogik
 - Aktuelle Ja-/Vielleicht-Zählung ohne Teilnehmerlisten im Frontend
 - Zeitlich eingegrenzter Kommentar-Zyklus und sichtbarer Fehlerzustand bei nicht verfügbaren Daten
-- Anfahrt zur Trainingsort mit Google Maps: Die interaktive Karte wird erst nach Nutzeraktion geladen
 - Bereiche für Über uns, „Basketball von A bis Bier“, Kastenmann, Mitspielen, Links sowie rechtliche Seiten
 
 ## Tech Stack

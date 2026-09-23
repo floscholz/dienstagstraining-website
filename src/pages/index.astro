@@ -122,28 +122,11 @@ const linkGroups = [
           <div class="contact-preview__content">
             <p class="eyebrow">Mitspielen</p>
             <h2 id="contact-title"><span>Noch Fragen?</span><span>Oder direkt mitspielen?</span></h2>
-            <p class="contact-preview__lead">Du hast Lust mitzuspielen? Dann komm einfach vorbei. Etwas Basketballerfahrung solltest du mitbringen – und neue Spieler wissen ja inzwischen, was es mit dem Einstand auf sich hat.</p>
+            <p class="contact-preview__lead">Du hast Lust mitzuspielen und bringst etwas Basketballerfahrung mit? Dann schreib uns kurz. Alles Weitere klären wir unkompliziert – und neue Spieler wissen ja inzwischen, was es mit dem Einstand auf sich hat.</p>
+            <a class="button contact-preview__cta" href="mailto:dienstagsbasketball@gmail.com">E-Mail schreiben <span aria-hidden="true">→</span></a>
             <p class="contact-preview__signature">Dienstags. 20:00 Uhr. Basketball. Bier.</p>
           </div>
         </section>
-      </div>
-    </section>
-
-    <section class="travel-section" id="anfahrt" data-reveal aria-labelledby="travel-title">
-      <div class="travel-section__inner">
-        <div class="travel-section__content">
-          <p class="eyebrow">Anfahrt</p>
-          <h2 id="travel-title">Hier wird gespielt.</h2>
-          <address>Trainingsort<br />Trainingsort 8<br />Trainingsort</address>
-          <a class="button button--quiet" href="https://www.google.com/maps/search/?api=1&amp;query=Trainingsort%2C%20Trainingsort%208%2C%20Trainingsort" target="_blank" rel="noopener noreferrer">Route in Google Maps öffnen <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="map-consent" data-map-consent>
-          <div class="map-consent__copy">
-            <p class="eyebrow">Karte</p>
-            <p>Mit dem Laden der Karte werden Inhalte von Google Maps geladen.</p>
-            <button class="button" type="button" data-map-load>Interaktive Karte laden</button>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -309,20 +292,6 @@ const linkGroups = [
   }, 60_000);
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) refreshTraining();
-  });
-
-  const mapConsent = document.querySelector<HTMLElement>('[data-map-consent]');
-  const mapLoadButton = document.querySelector<HTMLButtonElement>('[data-map-load]');
-  mapLoadButton?.addEventListener('click', () => {
-    if (!mapConsent) return;
-    const iframe = document.createElement('iframe');
-    iframe.className = 'map-consent__iframe';
-    iframe.title = 'Karte zur Trainingsort';
-    iframe.loading = 'lazy';
-    iframe.referrerPolicy = 'no-referrer-when-downgrade';
-    iframe.src = 'https://www.google.com/maps?q=Trainingsort%2C%20Trainingsort%208%2C%20Trainingsort&output=embed';
-    mapConsent.replaceChildren(iframe);
-    mapConsent.classList.add('is-loaded');
   });
 
   if (!reducedMotion.matches) {
