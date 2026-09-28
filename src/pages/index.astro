@@ -235,6 +235,10 @@ const linkGroups = [
   let hasLiveTrainingData = false;
   let isRefreshingTraining = false;
   let lastTrainingRequestAt = 0;
+  const legacyDomainHosts = new Set(['dienstagstraining.de', 'www.dienstagstraining.de']);
+  const nuudelApiUrl = legacyDomainHosts.has(window.location.hostname)
+    ? 'https://dienstagstraining.netlify.app/api/nuudel'
+    : '/api/nuudel';
 
   const refreshTraining = () => {
     const now = Date.now();
@@ -242,7 +246,7 @@ const linkGroups = [
     isRefreshingTraining = true;
     lastTrainingRequestAt = now;
 
-    fetch('/api/nuudel', { cache: 'no-store', headers: { Accept: 'application/json' } })
+    fetch(nuudelApiUrl, { cache: 'no-store', headers: { Accept: 'application/json' } })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error('Nuudel nicht erreichbar')))
       .then((training) => {
         if (!trainingDate || !trainingSchedule || !trainingStatus || !trainingUpdatedAt || !trainingYes || !trainingMaybe) return;

@@ -2,6 +2,25 @@ const POLL_ID = 'zEF2odgzCry7VOLm';
 const POLL_URL = `https://nuudel.digitalcourage.de/${POLL_ID}`;
 const CSV_URL = `https://nuudel.digitalcourage.de/exportcsv.php?poll=${POLL_ID}`;
 const BERLIN_TIME_ZONE = 'Europe/Berlin';
+const ALLOWED_ORIGINS = new Set([
+  'http://dienstagstraining.de',
+  'http://www.dienstagstraining.de',
+  'https://dienstagstraining.de',
+  'https://www.dienstagstraining.de',
+  'https://dienstagstraining.netlify.app',
+]);
+
+const responseHeaders = (request) => {
+  const headers = new Headers({
+    'Cache-Control': 'no-store, no-cache, must-revalidate',
+    'Vary': 'Origin',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Accept, Content-Type',
+  });
+  const origin = request.headers.get('Origin');
+  if (origin && ALLOWED_ORIGINS.has(origin)) headers.set('Access-Control-Allow-Origin', origin);
+  return headers;
+};
 
 const csvRows = (input) => {
   const rows = [];
@@ -95,9 +114,13 @@ export const parseNuudel = (csv, html, now = new Date()) => {
   };
 };
 
-export default async () => {
+export default async (request) => {
+  const headers = responseHeaders(request);
+  if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers });
+  if (request.method !== 'GET') return new Response('Method Not Allowed', { status: 405, headers });
   const [csvResponse, htmlResponse] = await Promise.all([fetch(CSV_URL, { cache: 'no-store' }), fetch(POLL_URL, { cache: 'no-store' })]);
   if (!csvResponse.ok || !htmlResponse.ok) throw new Error('Nuudel-Abruf fehlgeschlagen');
   const data = parseNuudel(await csvResponse.text(), await htmlResponse.text());
-  return new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store, no-cache, must-revalidate' } });
+  headers.set('Content-Type', 'application/json; charset=utf-8');
+  return new Response(JSON.stringify(data), { headers });
 };
