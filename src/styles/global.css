@@ -207,7 +207,7 @@ html[data-motion-ready='true'] .announcement__content[data-reveal].is-visible { 
   .links-intro h1, .links-intro h2 { font-size: clamp(3.75rem, 18vw, 5.5rem); }
   .link-row { min-height: 6.25rem; gap: var(--space-3); }
   .announcement__visual { justify-self: center; }
-  .announcement h2 { font-size: clamp(3rem, 15vw, 5.5rem); }
+  .announcement h2 { max-width: 100%; font-size: clamp(2.5rem, 11.5vw, 4rem); letter-spacing: -.035em; }
   .hero-stage { align-items: end; }
   .hero-content { padding-top: 7.5rem; padding-bottom: 4.5rem; }
   .hero-background img { object-position: 68% center; }
