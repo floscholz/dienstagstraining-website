@@ -59,9 +59,15 @@ const addDay = (date) => {
 };
 
 const formatDateLabel = (date) => new Intl.DateTimeFormat('de-DE', { timeZone: BERLIN_TIME_ZONE, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${date}T12:00:00Z`));
-const normalizeTime = (value) => {
-  const match = value.match(/(\d{1,2})(?::(\d{2}))?/);
-  return match ? `${match[1].padStart(2, '0')}:${match[2] ?? '00'}` : null;
+export const explicitTime = (value = '') => {
+  const match = value.match(/(?:^|\D)([01]?\d|2[0-3])\s*(?:(?::|\.)\s*([0-5]\d)|h(?:\s*([0-5]\d))?|Uhr)(?!\w)/i);
+  if (!match) return null;
+  return `${match[1].padStart(2, '0')}:${match[2] ?? match[3] ?? '00'}`;
+};
+export const isTrainingSlot = (date, label = '') => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || new Date(`${date}T12:00:00Z`).getUTCDay() !== 2) return false;
+  const time = explicitTime(label);
+  return time === null || time === '20:00';
 };
 const decode = (value) => value.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#(?:x([0-9a-f]+)|([0-9]+));/gi, (_, hex, decimal) => String.fromCodePoint(Number.parseInt(hex ?? decimal, hex ? 16 : 10))).replace(/<[^>]*>/g, '').trim();
 const berlinDateTime = (date) => new Intl.DateTimeFormat('sv-SE', { timeZone: BERLIN_TIME_ZONE, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(date);
@@ -95,23 +101,35 @@ export const parseNuudel = (csv, html, now = new Date()) => {
   const dates = (rows[0] ?? []).slice(1);
   const times = (rows[1] ?? []).slice(1);
   const today = isoBerlinDate(now);
-  const index = dates.findIndex((date) => /^\d{4}-\d{2}-\d{2}$/.test(date) && date >= today);
-  if (index < 0) throw new Error('Kein aktueller Termin im Nuudel-Poll');
-  const date = dates[index];
-  const statuses = rows.slice(2).map((row) => row[index + 1]);
   const description = decode(html.match(/class="[^"]*poll-description[^"]*"[^>]*>([\s\S]*?)<\/div>/)?.[1] ?? '');
-  const selectedComment = selectCommentForCycle(parseComments(html), index > 0 ? dates[index - 1] : null);
-  return {
-    date,
-    dateLabel: formatDateLabel(date),
-    time: normalizeTime(times[index]) ?? '20:00',
-    locationText: description.replace(/^Immer\s+Dienstags?\s+\d{1,2}(?::\d{2})?\s*/i, '').trim() || null,
-    yes: statuses.filter((status) => status === 'Ja').length,
-    maybe: statuses.filter((status) => status === 'Unter Vorbehalt').length,
-    comment: selectedComment ? { author: selectedComment.author, text: selectedComment.text, createdAt: selectedComment.createdAt } : null,
+  const locationText = description.replace(/^Immer\s+Dienstags?\s+\d{1,2}(?:(?::|\.)\d{2})?\s*(?:Uhr|h)?\s*/i, '').trim() || null;
+  const trainings = dates.flatMap((date, index) => {
+    const label = times[index] ?? '';
+    if (!isTrainingSlot(date, label)) return [];
+    const statuses = rows.slice(2).map((row) => row[index + 1]);
+    return [{
+      date,
+      dateLabel: formatDateLabel(date),
+      time: explicitTime(label) ?? '20:00',
+      yes: statuses.filter((status) => status === 'Ja').length,
+      maybe: statuses.filter((status) => status === 'Unter Vorbehalt').length,
+      locationText,
+    }];
+  }).sort((first, second) => first.date.localeCompare(second.date));
+  const nextTraining = trainings.find((training) => training.date >= today) ?? null;
+  const nextIndex = nextTraining ? trainings.findIndex((training) => training.date === nextTraining.date) : -1;
+  const selectedComment = nextTraining ? selectCommentForCycle(parseComments(html), nextIndex > 0 ? trainings[nextIndex - 1].date : null) : null;
+  const shared = {
+    trainings,
     sourceUrl: POLL_URL,
     updatedAt: new Date().toISOString(),
   };
+  if (!nextTraining) return { ...shared, nextTraining: null };
+  const nextWithComment = {
+    ...nextTraining,
+    comment: selectedComment ? { author: selectedComment.author, text: selectedComment.text, createdAt: selectedComment.createdAt } : null,
+  };
+  return { ...shared, ...nextWithComment, nextTraining: nextWithComment };
 };
 
 export default async (request) => {

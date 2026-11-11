@@ -8,6 +8,10 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "test": "node --test test/*.test.mjs",
+    "deploy:check": "node scripts/deploy-all.mjs --check",
+    "deploy:ftp": "python3 scripts/deploy-ftp.py",
+    "deploy:all": "node scripts/deploy-all.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

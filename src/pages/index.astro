@@ -53,6 +53,25 @@ const linkGroups = [
     window.addEventListener('pageshow', resetHomeScrollPosition);
   </script>
   <main>
+    <section class="announcement" id="aktuell" aria-labelledby="announcement-section-title" data-announcement hidden>
+      <div class="announcement__inner">
+        <p class="eyebrow" id="announcement-section-title">Aktuell</p>
+        <div class="announcement__layout">
+          <figure class="announcement__visual">
+            <img data-announcement-image src="" alt="" width="1086" height="1448" />
+          </figure>
+          <div class="announcement__content" data-announcement-text data-reveal>
+            <p class="announcement__kind" data-announcement-kind></p>
+            <h2 data-announcement-title></h2>
+            <dl class="announcement__facts" data-announcement-facts></dl>
+            <p class="announcement__description" data-announcement-description></p>
+            <ul class="announcement__bullets" data-announcement-bullets></ul>
+            <a class="button announcement__cta" data-announcement-cta hidden></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="hero-scroll" id="top" data-hero-trigger aria-labelledby="hero-title">
       <div class="hero-stage">
         <div class="hero-background" aria-hidden="true"><img src="/images/hero/basketball-v17-poster.jpg" alt="" /></div>
@@ -82,7 +101,7 @@ const linkGroups = [
         <div class="training-showcase__details">
           <p class="training-showcase__status-label" data-training-status aria-live="polite">Aktualisiere Teilnehmerzahl …</p>
           <p class="training-showcase__updated-at" data-training-updated-at hidden></p>
-          <ul class="training-showcase__attendance" aria-label="Teilnahmestatus">
+          <ul class="training-showcase__attendance" aria-label="Teilnahmestatus" data-training-attendance>
             <li class="training-showcase__status training-showcase__status--confirmed"><strong data-training-yes>–</strong><span>dabei</span></li>
             <li class="training-showcase__status"><strong data-training-maybe>–</strong><span>vielleicht</span></li>
           </ul>
@@ -168,7 +187,9 @@ const linkGroups = [
 </BaseLayout>
 
 <script>
-  const revealTargets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  import { selectAnnouncement } from '../lib/announcement-schedule.mjs';
+
+  const revealTargets = document.querySelectorAll<HTMLElement>('[data-reveal]:not([data-announcement-text])');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const HERO_ENTER_THRESHOLD = 0.6;
   const HERO_LEAVE_THRESHOLD = 0.15;
@@ -177,6 +198,7 @@ const linkGroups = [
   const CONTENT_REVEAL_DELAY = 200;
 
   const sectionNavLinks = document.querySelectorAll<HTMLAnchorElement>('[data-scrollspy-link]');
+  const siteNav = document.querySelector<HTMLElement>('.site-nav');
   const scrollspySections = Array.from(sectionNavLinks).flatMap((link) => {
     const section = document.getElementById(link.dataset.scrollspyLink ?? '');
     return section ? [{ link, section }] : [];
@@ -213,6 +235,170 @@ const linkGroups = [
   const trainingYes = document.querySelector<HTMLElement>('[data-training-yes]');
   const trainingMaybe = document.querySelector<HTMLElement>('[data-training-maybe]');
   const trainingComment = document.querySelector<HTMLElement>('[data-training-comment]');
+  const trainingAttendance = document.querySelector<HTMLElement>('[data-training-attendance]');
+  const announcement = document.querySelector<HTMLElement>('[data-announcement]');
+  const announcementNav = document.querySelector<HTMLAnchorElement>('[data-announcement-nav]');
+  const announcementVisual = document.querySelector<HTMLElement>('.announcement__visual');
+  const announcementImage = document.querySelector<HTMLImageElement>('[data-announcement-image]');
+  const announcementKind = document.querySelector<HTMLElement>('[data-announcement-kind]');
+  const announcementTitle = document.querySelector<HTMLElement>('[data-announcement-title]');
+  const announcementFacts = document.querySelector<HTMLElement>('[data-announcement-facts]');
+  const announcementDescription = document.querySelector<HTMLElement>('[data-announcement-description]');
+  const announcementBullets = document.querySelector<HTMLElement>('[data-announcement-bullets]');
+  const announcementCta = document.querySelector<HTMLAnchorElement>('[data-announcement-cta]');
+  const announcementText = document.querySelector<HTMLElement>('[data-announcement-text]');
+
+  type Announcement = {
+    title: string;
+    eventDate?: string;
+    dateLabel?: string;
+    time?: string;
+    location?: string;
+    image: string;
+    description?: string;
+    bullets?: string[];
+    ctaLink?: string;
+    ctaLabel?: string;
+  };
+
+  const localPreviewHosts = new Set(['localhost', '127.0.0.1']);
+  const preview = new URLSearchParams(window.location.search).get('preview');
+  const allowPreview = localPreviewHosts.has(window.location.hostname);
+  const wideAnnouncementLayout = window.matchMedia('(min-width: 48rem)');
+  let hasAnnouncementEntered = false;
+  let announcementFlyerTimer: number | undefined;
+  let announcementTextObserver: IntersectionObserver | undefined;
+  let announcementTextIsIntersecting = false;
+  let announcementInitialScrollY = 0;
+  let announcementFlyerFinished = false;
+
+  const revealAnnouncementText = () => {
+    if (!announcementText) return;
+    announcementText.classList.add('is-visible');
+    announcementTextObserver?.disconnect();
+    announcementTextObserver = undefined;
+    window.removeEventListener('scroll', handleAnnouncementScroll);
+  };
+
+  const handleAnnouncementScroll = () => {
+    if (Math.abs(window.scrollY - announcementInitialScrollY) < 2) return;
+    if (announcementTextIsIntersecting && announcementFlyerFinished) revealAnnouncementText();
+  };
+
+  const handleAnnouncementFlyerEnd = (event: TransitionEvent) => {
+    if (event.target !== announcementVisual || event.propertyName !== 'opacity') return;
+    announcementFlyerFinished = true;
+    announcementVisual?.removeEventListener('transitionend', handleAnnouncementFlyerEnd);
+    if (wideAnnouncementLayout.matches) {
+      revealAnnouncementText();
+    } else if (announcementTextIsIntersecting && Math.abs(window.scrollY - announcementInitialScrollY) >= 2) {
+      revealAnnouncementText();
+    }
+  };
+
+  const clearAnnouncementAnimation = () => {
+    window.clearTimeout(announcementFlyerTimer);
+    announcementVisual?.removeEventListener('transitionend', handleAnnouncementFlyerEnd);
+    announcementTextObserver?.disconnect();
+    announcementTextObserver = undefined;
+    announcementTextIsIntersecting = false;
+    announcementFlyerFinished = false;
+    window.removeEventListener('scroll', handleAnnouncementScroll);
+  };
+
+  const startAnnouncementAnimation = () => {
+    if (!announcement || !announcementText) return;
+    clearAnnouncementAnimation();
+    announcement.classList.remove('is-flyer-visible');
+    announcementText.classList.remove('is-visible');
+
+    if (reducedMotion.matches) {
+      announcementFlyerFinished = true;
+      announcement.classList.remove('is-entering');
+      announcement.classList.add('is-flyer-visible');
+      announcementText.classList.add('is-visible');
+      return;
+    }
+
+    announcement.classList.add('is-entering');
+    announcementVisual?.addEventListener('transitionend', handleAnnouncementFlyerEnd);
+    announcementFlyerTimer = window.setTimeout(() => announcement.classList.add('is-flyer-visible'), 120);
+
+    if (wideAnnouncementLayout.matches) return;
+
+    announcementInitialScrollY = window.scrollY;
+    window.addEventListener('scroll', handleAnnouncementScroll, { passive: true });
+    announcementTextObserver = new IntersectionObserver((entries) => {
+      announcementTextIsIntersecting = Boolean(entries[0]?.isIntersecting);
+      if (announcementTextIsIntersecting && announcementFlyerFinished && Math.abs(window.scrollY - announcementInitialScrollY) >= 2) {
+        revealAnnouncementText();
+      }
+    }, { rootMargin: '0px 0px -18% 0px', threshold: .12 });
+    announcementTextObserver.observe(announcementText);
+  };
+
+  const appendFact = (label: string, value: string, dateTime?: string) => {
+    if (!announcementFacts) return;
+    const wrapper = document.createElement('div');
+    const term = document.createElement('dt');
+    const detail = document.createElement('dd');
+    term.textContent = label;
+    if (dateTime) {
+      const time = document.createElement('time');
+      time.dateTime = dateTime;
+      time.textContent = value;
+      detail.append(time);
+    } else {
+      detail.textContent = value;
+    }
+    wrapper.append(term, detail);
+    announcementFacts.append(wrapper);
+  };
+
+  const renderAnnouncement = (trainings: Array<{ date: string }> = []) => {
+    if (!announcement || !announcementImage || !announcementKind || !announcementTitle || !announcementFacts || !announcementDescription || !announcementBullets || !announcementCta || !announcementText) return;
+    const entry = selectAnnouncement({ trainings, preview, allowPreview }) as Announcement | null;
+    announcement.hidden = !entry;
+    if (announcementNav) announcementNav.hidden = !entry;
+    siteNav?.classList.toggle('site-nav--with-announcement', Boolean(entry));
+    if (!entry) {
+      clearAnnouncementAnimation();
+      announcement.classList.remove('is-entering', 'is-flyer-visible');
+      announcementText.classList.remove('is-visible');
+      hasAnnouncementEntered = false;
+      return;
+    }
+
+    if (!hasAnnouncementEntered) {
+      hasAnnouncementEntered = true;
+      startAnnouncementAnimation();
+    }
+
+    announcementImage.src = entry.image;
+    announcementImage.alt = entry.title;
+    announcementKind.textContent = entry.eventDate ? 'Gemeinsamer Abend' : 'Saisonale Grüße';
+    announcementTitle.textContent = entry.title;
+    announcementDescription.textContent = entry.description ?? '';
+    announcementDescription.hidden = !entry.description;
+    announcementFacts.replaceChildren();
+    if (entry.dateLabel && entry.eventDate) appendFact('Datum', entry.dateLabel, entry.eventDate);
+    if (entry.time) appendFact('Uhrzeit', entry.time, entry.eventDate ? `${entry.eventDate}T${entry.time.slice(0, 5)}` : undefined);
+    if (entry.location) appendFact('Ort', entry.location);
+    announcementFacts.hidden = announcementFacts.childElementCount === 0;
+    announcementBullets.replaceChildren(...(entry.bullets ?? []).map((label) => {
+      const item = document.createElement('li');
+      item.textContent = label;
+      return item;
+    }));
+    announcementBullets.hidden = announcementBullets.childElementCount === 0;
+    announcementCta.hidden = !entry.ctaLink;
+    if (entry.ctaLink) {
+      announcementCta.href = entry.ctaLink;
+      announcementCta.textContent = entry.ctaLabel ?? 'Mehr erfahren';
+    }
+  };
+
+  renderAnnouncement();
 
   const renderTrainingComment = (comment: { author: string; text: string } | null) => {
     if (!trainingComment) return;
@@ -250,6 +436,19 @@ const linkGroups = [
       .then((response) => response.ok ? response.json() : Promise.reject(new Error('Nuudel nicht erreichbar')))
       .then((training) => {
         if (!trainingDate || !trainingSchedule || !trainingStatus || !trainingUpdatedAt || !trainingYes || !trainingMaybe) return;
+        renderAnnouncement(Array.isArray(training.trainings) ? training.trainings : []);
+        if (!training.nextTraining && !training.date) {
+          trainingDate.textContent = 'Kein nächstes Training';
+          trainingSchedule.textContent = 'Aktuell ist kein nächstes Training eingetragen.';
+          trainingStatus.textContent = 'Nuudel';
+          trainingUpdatedAt.textContent = '';
+          trainingUpdatedAt.hidden = true;
+          if (trainingAttendance) trainingAttendance.hidden = true;
+          renderTrainingComment(null);
+          hasLiveTrainingData = true;
+          return;
+        }
+        if (trainingAttendance) trainingAttendance.hidden = false;
         trainingDate.textContent = training.dateLabel;
         trainingSchedule.replaceChildren();
         const time = document.createElement('time');
